@@ -1598,3 +1598,223 @@ body {
   color: var(--primary);
   font-weight: 500;
 }
+
+/* ==========================================================================
+   NATIVE MOBILE APP UI ENHANCEMENTS (Fixed Bottom App Bar & Responsive UI)
+   ========================================================================== */
+
+.mobile-bottom-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Hide desktop top nav bar on mobile */
+  .app-header .nav-bar {
+    display: none;
+  }
+
+  /* Compact Mobile Header */
+  .app-header {
+    padding: 1.25rem 1rem 0.6rem;
+  }
+
+  .header-banner {
+    margin-bottom: 0.2rem;
+  }
+
+  .main-title {
+    font-size: 1.45rem;
+    margin-bottom: 2px;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+    color: #cbd5e1;
+  }
+
+  .badge-tag {
+    padding: 3px 10px;
+    font-size: 0.7rem;
+    margin-bottom: 6px;
+  }
+
+  /* Add padding to body so fixed bottom nav doesn't cover content */
+  body {
+    padding-bottom: 75px;
+  }
+
+  .app-main {
+    padding: 0.85rem 0.75rem;
+  }
+
+  /* FIXED NATIVE MOBILE BOTTOM APP BAR */
+  .mobile-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid #e2e8f0;
+    z-index: 1800;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: max(4px, env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  .m-nav-btn {
+    background: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: #64748b;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+    padding: 6px 0;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+
+  .m-nav-btn svg {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.15s ease;
+  }
+
+  .m-nav-btn.active {
+    color: #0d9488;
+    font-weight: 700;
+  }
+
+  .m-nav-btn.active svg {
+    transform: translateY(-2px);
+    color: #0d9488;
+  }
+
+  /* Mobile Dashboard & Cards Optimization */
+  .main-top-banner {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 0.85rem;
+  }
+
+  #main-today-title {
+    font-size: 0.92rem;
+  }
+
+  .weather-header {
+    padding: 0.85rem 1rem;
+  }
+
+  .weather-title-wrap h3 {
+    font-size: 1.02rem;
+  }
+
+  .weather-body {
+    padding: 1rem;
+    gap: 0.85rem;
+  }
+
+  .weather-main-display {
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+  }
+
+  .weather-icon-large {
+    width: 52px;
+    height: 52px;
+  }
+
+  .weather-icon-large svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .current-temp {
+    font-size: 1.75rem;
+  }
+
+  .weather-desc-text {
+    font-size: 0.9rem;
+  }
+
+  /* Mobile Split Map & Itinerary Layout */
+  .split-map-itinerary {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .split-left-map {
+    position: static;
+    height: 280px;
+    min-height: 240px;
+    margin-bottom: 0.5rem;
+  }
+
+  .split-left-map .map-wrapper {
+    border-radius: 12px;
+  }
+
+  .itinerary-card {
+    border-radius: 12px;
+    margin-bottom: 0.85rem;
+  }
+
+  .itinerary-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .day-title {
+    font-size: 0.98rem;
+  }
+
+  .itinerary-body {
+    padding: 0.85rem 1rem;
+  }
+
+  .slot-item {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .slot-time-text {
+    font-size: 0.82rem;
+    min-width: 72px;
+  }
+
+  .slot-title {
+    font-size: 0.88rem;
+  }
+
+  .checklist-grid-container {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .checklist-category-card {
+    border-radius: 12px;
+  }
+
+  .category-card-header {
+    padding: 8px 12px;
+  }
+
+  .check-item {
+    padding: 8px 10px;
+  }
+
+  .app-footer {
+    padding: 1.5rem 1rem;
+    margin-top: 1.5rem;
+  }
+}

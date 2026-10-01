@@ -627,10 +627,16 @@ function initDDayTimer() {
 
 // NAVIGATION TABS SWITCHER HELPER
 window.switchNavTab = function(targetId) {
-  const navBtns = document.querySelectorAll('.nav-btn');
+  const desktopBtns = document.querySelectorAll('.nav-btn');
+  const mobileBtns = document.querySelectorAll('.m-nav-btn');
   const sections = document.querySelectorAll('.app-section');
 
-  navBtns.forEach(b => {
+  desktopBtns.forEach(b => {
+    if (b.getAttribute('data-target') === targetId) b.classList.add('active');
+    else b.classList.remove('active');
+  });
+
+  mobileBtns.forEach(b => {
     if (b.getAttribute('data-target') === targetId) b.classList.add('active');
     else b.classList.remove('active');
   });
@@ -639,6 +645,8 @@ window.switchNavTab = function(targetId) {
     if (s.id === targetId) s.classList.add('active');
     else s.classList.remove('active');
   });
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   if (targetId === 'sec-main' && mainLeafletMap) {
     setTimeout(() => mainLeafletMap.invalidateSize(), 150);
@@ -649,9 +657,9 @@ window.switchNavTab = function(targetId) {
 };
 
 function initNavigationTabs() {
-  const navBtns = document.querySelectorAll('.nav-btn');
+  const allNavBtns = document.querySelectorAll('.nav-btn, .m-nav-btn');
 
-  navBtns.forEach(btn => {
+  allNavBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.getAttribute('data-target');
       window.switchNavTab(targetId);
