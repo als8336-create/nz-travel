@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0d9488">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="NZ 여행">
+  <link rel="apple-touch-icon" href="assets/icon.svg">
+  <link rel="manifest" href="manifest.json">
+  <title>🇳🇿 뉴질랜드 여행일정 (10.5 ~ 10.17)</title>
+  
+  <!-- Google Fonts: Inter & Noto Sans KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Leaflet Interactive Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-banner">
+      <div class="badge-tag"><i data-lucide="heart" class="icon-heart"></i> NEW ZEALAND TRIP</div>
+      <h1 class="main-title">뉴질랜드 여행일정 🇳🇿</h1>
+      <p class="subtitle">2026. 10. 5 (월) ~ 10. 17 (토) · 12박 13일의 특별한 여정</p>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <nav class="nav-bar">
+      <button class="nav-btn active" data-target="sec-main">
+        <i data-lucide="home"></i> <span>메인 (오늘의 여행)</span>
+      </button>
+      <button class="nav-btn" data-target="sec-itinerary">
+        <i data-lucide="map-pin"></i> <span>전체 일정 & 지도</span>
+      </button>
+      <button class="nav-btn" data-target="sec-stays">
+        <i data-lucide="bed-double"></i> <span>숙소 & 투어</span>
+      </button>
+      <button class="nav-btn" data-target="sec-checklist">
+        <i data-lucide="check-square"></i> <span>준비물 & 메모</span>
+      </button>
+      <button class="nav-btn" data-target="sec-tips">
+        <i data-lucide="compass"></i> <span>여행팁 & 환율</span>
+      </button>
+    </nav>
+  </header>
+
+  <main class="app-main">
+
+    <!-- SECTION 1: HOME / MAIN PAGE (TODAY'S ITINERARY & WEATHER) -->
+    <section id="sec-main" class="app-section active">
+      
+      <!-- Top Quick Info & Mobile App Install Banner -->
+      <div class="main-top-banner">
+        <div class="today-hero-pill">
+          <span class="hero-badge">🇳🇿 Today Highlight</span>
+          <span id="main-today-title">10.5 (월) Day 1 · 인천공항 출발 ➔ 오클랜드 비행기 탑승</span>
+        </div>
+        <button class="btn btn-primary btn-sm btn-pwa-install" id="btn-open-install-guide">
+          <i data-lucide="smartphone"></i> 핸드폰 어플로 다운받기
+        </button>
+      </div>
+
+      <!-- Main Dashboard Grid: Weather Card & Today Course -->
+      <div class="grid-main-dashboard">
+        
+        <!-- Regional Live Weather Card -->
+        <div class="card weather-card">
+          <div class="card-header weather-header">
+            <div class="weather-title-wrap">
+              <h3><i data-lucide="cloud-sun"></i> 현지 날씨 & 여행 정보</h3>
+              <small id="weather-location-name">🇳🇿 퀸스타운 (Queenstown) 10월 날씨</small>
+            </div>
+            <!-- Weather Location Selector Dropdown -->
+            <select id="weather-city-select" class="select-input select-sm">
+              <option value="queenstown" selected>🏔️ 퀸스타운 (Day 2~4)</option>
+              <option value="wanaka">🏞️ 와나카 (Day 5~6)</option>
+              <option value="tekapo">🌌 테카포/트위젤 (Day 7~8)</option>
+              <option value="christchurch">🏛️ 크라이스트처치 (Day 9~10)</option>
+              <option value="auckland">🏙️ 오클랜드 (Day 1, 10~13)</option>
+            </select>
+          </div>
+
+          <div class="card-body weather-body">
+            <div class="weather-main-display">
+              <div class="weather-icon-large" id="weather-icon-box">
+                <i data-lucide="sun" class="w-sun"></i>
+              </div>
+              <div class="weather-temp-wrap">
+                <div class="current-temp" id="weather-temp-text">14°C</div>
+                <div class="weather-desc-text" id="weather-condition-text">맑고 쾌청함 (Spring)</div>
+                <div class="temp-minmax" id="weather-minmax-text">최저 5°C / 최고 16°C</div>
+              </div>
+            </div>
+
+            <div class="weather-details-grid">
+              <div class="weather-detail-item">
+                <span class="detail-label"><i data-lucide="droplets"></i> 습도</span>
+                <strong id="weather-humidity">58%</strong>
+              </div>
+              <div class="weather-detail-item">
+                <span class="detail-label"><i data-lucide="wind"></i> 바람</span>
+                <strong id="weather-wind">12 km/h</strong>
+              </div>
+              <div class="weather-detail-item">
+                <span class="detail-label"><i data-lucide="umbrella"></i> 강수확률</span>
+                <strong id="weather-rain">10%</strong>
+              </div>
+              <div class="weather-detail-item">
+                <span class="detail-label"><i data-lucide="shirt"></i> 추천 의상</span>
+                <strong id="weather-outfit">경량패딩 & 바람막이 🧥</strong>
+              </div>
+            </div>
+
+            <div class="weather-notice-box" id="weather-tip-box">
+              <i data-lucide="sparkles"></i> <span>💡 퀸스타운은 일교차가 크므로 야외 활동 시 따뜻한 보온 의류 지참 필수!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Today Course Section: Day Pills & Split Map/Itinerary -->
+        <div class="split-main-course card">
+          <div class="card-header">
+            <h3><i data-lucide="map-pin"></i> 당일 코스 & 동선 지도</h3>
+            <button class="btn btn-outline btn-sm" onclick="switchNavTab('sec-itinerary')">
+              <i data-lucide="list"></i> 전체 일정 보기
+            </button>
+          </div>
+          <div class="card-body" style="padding:1rem;">
+            
+            <!-- Day Pills for Main Page -->
+            <div class="day-pills-scroll" id="main-day-pills">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <div class="split-map-itinerary">
+              <!-- Sticky Leaflet Map for Selected Day -->
+              <div class="split-left-map">
+                <div class="map-mode-bar">
+                  <button class="map-mode-btn active" id="btn-main-mode-interactive">
+                    <i data-lucide="navigation"></i> <span id="main-map-title-label">Day 1 동선 지도 (❶❷❸)</span>
+                  </button>
+                </div>
+                <div class="map-wrapper" id="main-map-wrap">
+                  <div id="main-leaflet-map" style="width:100%; height:100%; min-height:460px;"></div>
+                </div>
+              </div>
+
+              <!-- Timeline Cards Container for Selected Day -->
+              <div class="split-right-itinerary">
+                <div id="main-today-card-container" class="itinerary-cards">
+                  <!-- Rendered dynamically via app.js -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: FULL ITINERARY & MAP -->
+    <section id="sec-itinerary" class="app-section">
+      <div class="split-map-itinerary">
+        <!-- LEFT COLUMN: STICKY MAP WITH INTERACTIVE & MY MAPS MODES -->
+        <div class="split-left-map">
+          <div class="map-mode-bar">
+            <button class="map-mode-btn active" id="btn-mode-interactive">
+              <i data-lucide="navigation"></i> <span>일정 동선 지도 (❶❷❸)</span>
+            </button>
+            <button class="map-mode-btn" id="btn-mode-mymaps">
+              <i data-lucide="map"></i> <span>구글 내 지도 (My Maps)</span>
+            </button>
+          </div>
+
+          <!-- Interactive Leaflet Map Container -->
+          <div class="map-wrapper" id="leaflet-map-wrap">
+            <div id="leaflet-map" style="width:100%; height:100%; min-height:500px;"></div>
+          </div>
+
+          <!-- Google My Maps Iframe Container (Toggleable) -->
+          <div class="map-wrapper hidden" id="gmaps-main-wrap">
+            <iframe id="gmaps-iframe" src="https://www.google.com/maps/d/embed?mid=10h4B1fwAvBDgqcWQfzSOw6vDjxTehtw" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: DAILY ITINERARY -->
+        <div class="split-right-itinerary">
+          <div class="itinerary-schedule-header">
+            <h3><i data-lucide="calendar"></i> 10.5 ~ 10.17 일자별 일정</h3>
+            <button class="btn btn-primary btn-sm" id="btn-add-custom-event">
+              <i data-lucide="plus"></i> 새 일정 추가
+            </button>
+          </div>
+
+          <!-- Day Selector Pills -->
+          <div class="day-pills-scroll" id="day-pills">
+            <!-- Rendered dynamically via app.js -->
+          </div>
+
+          <!-- Itinerary List Container -->
+          <div id="itinerary-cards-container" class="itinerary-cards">
+            <!-- Rendered dynamically via app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: STAYS & ACTIVITIES -->
+    <section id="sec-stays" class="app-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><i data-lucide="bed-double"></i> 숙소 및 핵심 투어 리스트</h2>
+          <p>이번 여행의 6개 숙소 예약 정보와 액티비티 필수 안내 사항 모아보기</p>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Accommodations List -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-lucide="home"></i> 예약된 숙소 (6곳)</h3>
+          </div>
+          <div class="card-body stay-list" id="stay-list">
+            <!-- Stay Cards rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- Tours & Highlights List -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-lucide="sparkles"></i> 주요 액티비티 & 투어</h3>
+          </div>
+          <div class="card-body activity-list" id="activity-list">
+            <!-- Activity Cards rendered dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: CHECKLIST & NOTES -->
+    <section id="sec-checklist" class="app-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><i data-lucide="check-square"></i> 준비물 체크리스트 & 메모장</h2>
+          <p>놓치기 쉬운 필수 서류, 준비물 및 여행 메모를 스마트하게 관리하세요.</p>
+        </div>
+      </div>
+
+      <!-- Preparation Checklist Card -->
+      <div class="card checklist-main-card">
+        <div class="card-header">
+          <h3><i data-lucide="check-circle-2"></i> 여행 준비물 체크리스트</h3>
+          <div class="progress-wrap">
+            <span id="checklist-progress-text">0% 완료</span>
+            <div class="progress-bar"><div id="checklist-progress-fill" class="fill" style="width: 0%;"></div></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="add-checklist-row">
+            <select id="new-item-category" class="select-input category-select">
+              <option value="필수 준비물">필수 준비물</option>
+              <option value="세면도구">세면도구</option>
+              <option value="일반 준비물">일반 준비물</option>
+              <option value="상비약">상비약</option>
+              <option value="전자제품">전자제품</option>
+              <option value="기타" selected>기타</option>
+            </select>
+            <input type="text" id="new-item-input" class="text-input" placeholder="새 준비물 추가하기 (예: 썬크림)">
+            <button class="btn btn-primary" id="btn-add-item"><i data-lucide="plus"></i> 추가</button>
+            <button class="btn btn-secondary btn-sm" id="btn-reset-checklist" title="기본 체크리스트로 초기화"><i data-lucide="rotate-ccw"></i> 초기화</button>
+          </div>
+
+          <div class="checklist-grid-container" id="checklist-container">
+            <!-- Checklist category cards rendered dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Couple Memo Card -->
+      <div class="card memo-main-card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <h3><i data-lucide="file-text"></i> 커플 자유 여행 메모장</h3>
+          <span class="save-status" id="memo-save-status">자동 저장됨</span>
+        </div>
+        <div class="card-body">
+          <textarea id="trip-memo" class="memo-textarea" placeholder="쇼핑 목록, 가보고 싶은 카페, 긴급 메모 등을 여기에 자유롭게 작성하세요... (자동 저장됩니다)"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: TRAVEL TIPS & NZD CONVERTER -->
+    <section id="sec-tips" class="app-section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <h2><i data-lucide="compass"></i> 뉴질랜드 여행 꿀팁 & 실시간 환율</h2>
+          <p>현지 운전 규칙, 필수 어플, 1 NZD ↔ KRW 환율 계산기</p>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <!-- NZD Converter -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-lucide="calculator"></i> 뉴질랜드 달러 (NZD) ↔ 원화 (KRW) 환율 계산</h3>
+          </div>
+          <div class="card-body">
+            <div class="converter-box">
+              <div class="currency-row">
+                <label>🇳🇿 뉴질랜드 달러 (NZD)</label>
+                <div class="input-with-symbol">
+                  <span>$</span>
+                  <input type="number" id="nzd-input" class="text-input num-input" value="100" min="0">
+                </div>
+              </div>
+              <div class="converter-arrow"><i data-lucide="arrow-down-up"></i></div>
+              <div class="currency-row">
+                <label>🇰🇷 대한민국 원 (KRW)</label>
+                <div class="input-with-symbol">
+                  <span>₩</span>
+                  <input type="number" id="krw-input" class="text-input num-input" value="82000" min="0">
+                </div>
+              </div>
+              <div class="rate-setting">
+                <small>기준 환율 (1 NZD = <input type="number" id="base-rate" value="820" class="rate-input"> 원)</small>
+              </div>
+            </div>
+            
+            <div class="quick-calc-pills">
+              <span class="calc-pill" data-nzd="15">퍼그버거약 $15</span>
+              <span class="calc-pill" data-nzd="50">주유비약 $50</span>
+              <span class="calc-pill" data-nzd="100">식사 2인 $100</span>
+              <span class="calc-pill" data-nzd="350">스카이다이빙약 $350</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Driving & Safety Tips -->
+        <div class="card">
+          <div class="card-header">
+            <h3><i data-lucide="car"></i> 뉴질랜드 렌트카 운전 핵심 수칙</h3>
+          </div>
+          <div class="card-body tip-bullets">
+            <div class="tip-item">
+              <div class="tip-icon"><i data-lucide="alert-triangle"></i></div>
+              <div>
+                <strong>좌측 통행 (운전석이 오른쪽)</strong>
+                <p>한국과 반대이므로 중앙선을 항상 운전자 오른쪽에 두고 운전하세요. 깜빡이와 와이퍼 위치도 반대입니다.</p>
+              </div>
+            </div>
+
+            <div class="tip-item">
+              <div class="tip-icon"><i data-lucide="rotate-cw"></i></div>
+              <div>
+                <strong>회전교차로 (Roundabout) 규칙</strong>
+                <p>진입 전 우측에서 오고 있는 차량에 무조건 양보(Give Way)해야 합니다.</p>
+              </div>
+            </div>
+
+            <div class="tip-item">
+              <div class="tip-icon"><i data-lucide="shield-alert"></i></div>
+              <div>
+                <strong>원선 교량 (One Lane Bridge)</strong>
+                <p>빨간색 화살표 쪽은 양보해야 하며, 큰 화살표(검은색)가 우선 통행권입니다.</p>
+              </div>
+            </div>
+            <div class="tip-item">
+              <div class="tip-icon"><i data-lucide="phone-call"></i></div>
+              <div>
+                <strong>비상 연락처 (NZ Emergency)</strong>
+                <p>경찰/소방/구급차통합: <strong>111</strong> | 주 웰링턴 한국대사관: +64-4-473-9073</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add / Edit Event Modal -->
+  <div id="modal-add-event" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-heading-title"><i data-lucide="calendar-plus"></i> 일정 / 메모 추가 및 수정</h3>
+        <button class="btn-close-sm" id="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modal-item-id" value="">
+
+        <div class="form-group">
+          <label>날짜 선택</label>
+          <select id="modal-day-select" class="select-input">
+            <option value="1">10.5 (월) Day 1</option>
+            <option value="2">10.6 (화) Day 2</option>
+            <option value="3">10.7 (수) Day 3</option>
+            <option value="4">10.8 (목) Day 4</option>
+            <option value="5">10.9 (금) Day 5</option>
+            <option value="6">10.10 (토) Day 6</option>
+            <option value="7">10.11 (일) Day 7</option>
+            <option value="8">10.12 (월) Day 8</option>
+            <option value="9">10.13 (화) Day 9</option>
+            <option value="10">10.14 (수) Day 10</option>
+            <option value="11">10.15 (목) Day 11</option>
+            <option value="12">10.16 (금) Day 12</option>
+            <option value="13">10.17 (토) Day 13</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>시간 입력 (예: 09:35, 18:00 입력 시 자동으로 오전/오후 12시간제로 표시)</label>
+          <input type="text" id="modal-time-input" class="text-input" placeholder="시간 입력 (예: 09:35 또는 18:00)">
+        </div>
+
+        <div class="form-group">
+          <label>일정 / 메모 내용</label>
+          <input type="text" id="modal-title-input" class="text-input" placeholder="예: 퍼그버거 점심 식사 또는 스카이다이빙">
+        </div>
+
+        <div class="form-group">
+          <label>📍 장소 / 지도 위치 주소 (입력 시 지도 핀 ❶❷❸ 자동 생성)</label>
+          <input type="text" id="modal-address-input" class="text-input" placeholder="예: Queenstown, Fergburger, Wanaka, Lake Tekapo">
+        </div>
+
+        <div class="form-group">
+          <label>상태 선택</label>
+          <select id="modal-status-select" class="select-input">
+            <option value="confirmed">🟢 확정 (Confirmed)</option>
+            <option value="tentative">🟡 미확정 (Tentative)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>참고사항 / 메모 (선택사항)</label>
+          <input type="text" id="modal-note-input" class="text-input" placeholder="예: ⚠️ 앞이 막힌 운동화/신발 필수 지참">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="btn-cancel-modal">취소</button>
+        <button class="btn btn-primary" id="btn-save-event">저장하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PWA Install Guidance Modal -->
+  <div id="modal-pwa-install" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i data-lucide="smartphone"></i> 핸드폰 어플로 다운받기 (PWA)</h3>
+        <button class="btn-close-sm" id="btn-close-pwa-modal">&times;</button>
+      </div>
+      <div class="modal-body pwa-guide-body">
+        <div class="pwa-intro-badge">
+          ✨ 스마트폰 카메라로 QR 코드를 스캔하면 1초 만에 앱으로 연결됩니다!
+        </div>
+
+        <!-- QR Code Scanner Box -->
+        <div class="qr-code-box" style="text-align: center; background: #ffffff; padding: 1rem; border-radius: 12px; border: 1.5px solid #a7f3d0; margin-bottom: 1rem;">
+          <h4 style="color: #0d9488; margin-bottom: 6px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <i data-lucide="qr-code"></i> 핸드폰 카메라로 아래 QR 코드를 찍으세요!
+          </h4>
+          <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 10px;">스마트폰 기본 카메라를 열어 QR코드를 비추면 1초 만에 연결됩니다.</p>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=http://192.168.45.243:8085" alt="QR Code" style="border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+          <div style="font-size: 0.85rem; font-weight: 700; color: #0f766e; margin-top: 8px;">http://192.168.45.243:8085</div>
+        </div>
+
+        <div class="pwa-os-card">
+          <h4>🍎 아이폰 (iOS Safari 브라우저)</h4>
+          <ol>
+            <li>카메라 스캔 후 열린 Safari 화면 하단 <strong>[공유 버튼 ⎋]</strong>을 누릅니다.</li>
+            <li>메뉴에서 <strong>[홈 화면에 추가 (+)]</strong> ➔ <strong>[추가]</strong>를 선택합니다.</li>
+            <li>핸드폰 바탕화면에 <strong>NZ 여행</strong> 어플이 심어집니다!</li>
+          </ol>
+        </div>
+
+        <div class="pwa-os-card" style="margin-top: 0.8rem; background: #f0fdf4; border-color: #a7f3d0;">
+          <h4 style="color: #047857;"><i data-lucide="globe"></i> 🌐 나만의 무료 웹 주소 만들기 (노트북 없이 사용)</h4>
+          <p style="font-size: 0.82rem; color: #065f46; margin-bottom: 6px;">노트북을 켜놓지 않아도 뉴질랜드 현지에서 24시간 접속 가능한 1초 무료 웹주소 생성:</p>
+          <ol style="color: #047857;">
+            <li><a href="https://app.netlify.com/drop" target="_blank" style="color: #0d9488; font-weight: 700;">Netlify Drop (app.netlify.com/drop)</a> 사이트 접속</li>
+            <li>현재 여행 폴더(또는 생성해둔 <strong>nz_trip_app.zip</strong>)를 마우스로 끌어다 놓기만 하면 끝!</li>
+            <li>3초 만에 발급된 고유 무료 링크(https://...netlify.app)로 핸드폰에서 열기!</li>
+          </ol>
+        </div>
+
+        <div class="pwa-os-card" style="margin-top: 0.8rem;">
+          <h4>🤖 안드로이드 (크롬 / 삼성 인터넷)</h4>
+          <ol>
+            <li>카메라 스캔 후 열린 화면 상단/하단의 <strong>[앱 설치]</strong> 안내창을 누릅니다.</li>
+            <li>또는 메뉴 <strong>[⋮]</strong> ➔ <strong>[홈 화면에 추가]</strong>를 누릅니다.</li>
+            <li><strong>[설치]</strong> 버튼을 누르면 어플처럼 등록됩니다!</li>
+          </ol>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btn-confirm-pwa-modal">확인 완료</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>뉴질랜드 여행일정</p>
+  </footer>
+
+  <!-- Main App JavaScript -->
+  <script src="app.js"></script>
+</body>
+</html>
